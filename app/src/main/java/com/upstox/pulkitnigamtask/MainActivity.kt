@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import com.upstox.pulkitnigamtask.presentation.helper.PortfolioUIHelper
 import com.upstox.pulkitnigamtask.presentation.viewmodel.HoldingsViewModel
 import com.upstox.pulkitnigamtask.util.EdgeToEdgeHelper
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -210,10 +212,10 @@ class MainActivity : AppCompatActivity() {
         val todaysPnl: Double = holdings.sumOf { it.todaysPnl }
         
         binding.apply {
-            tvCurrentValue.text = "₹${String.format("%.2f", currentValue)}"
-            tvTotalInvestment.text = "₹${String.format("%.2f", totalInvestment)}"
-            tvTodaysPnl.text = "₹${String.format("%.2f", todaysPnl)}"
-            tvTotalPnl.text = "₹${String.format("%.2f", totalPnl)}"
+            tvCurrentValue.text = getString(R.string.currency_format, currentValue)
+            tvTotalInvestment.text = getString(R.string.currency_format, totalInvestment)
+            tvTodaysPnl.text = getString(R.string.currency_format, todaysPnl)
+            tvTotalPnl.text = getString(R.string.currency_format, totalPnl)
             
             // Set colors based on PnL
             val todaysPnlColor = if (todaysPnl >= 0) R.color.success_60 else R.color.error_60
@@ -231,7 +233,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateSummaryExpansion(isExpanded: Boolean) {
         binding.apply {
-            layoutSummaryDetails.visibility = if (isExpanded) View.VISIBLE else View.GONE
+            layoutSummaryDetails.isVisible = isExpanded
             ivExpandArrow.setImageResource(
                 if (isExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
             )
@@ -301,7 +303,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_refresh -> {
                 if (viewModel.refreshDataIfConnected()) {
-                    showSnackbar("Refreshing portfolio data...")
+                    showSnackbar(getString(R.string.refreshing_portfolio))
                 } else {
                     showSnackbar(getString(R.string.no_internet_available), isError = true)
                 }

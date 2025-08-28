@@ -18,11 +18,22 @@
     <string name="t1_holding">T1 Holding</string>
     <string name="ltp_format">LTP: ₹%s</string>
     <string name="net_qty_format">NET QTY: %s</string>
-    <string name="pnl_format">P&amp;L: ₹%s</string>
-    
+
     <!-- Network Connectivity Strings -->
     <string name="no_internet_message">No internet connection</string>
     <string name="retry_fetch_holdings">Retry to fetch holdings</string>
     <string name="internet_connected">Internet connected</string>
     <string name="no_internet_available">No internet connection available</string>
+    
+    <!-- Error Messages -->
+    <string name="something_went_wrong">Something went wrong</string>
+    
+    <!-- Default Values -->
+    <string name="default_currency_value">₹0.00</string>
+    <string name="default_pnl_value">₹0.00 (0.00%)</string>
+    
+    <!-- Dynamic Values with Placeholders -->
+    <string name="currency_format">₹%.2f</string>
+    <string name="pnl_format">₹%.2f</string>
+    <string name="refreshing_portfolio">Refreshing portfolio data...</string>
 </resources>
