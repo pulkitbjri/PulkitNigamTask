@@ -1,6 +1,5 @@
 package com.upstox.pulkitnigamtask.presentation.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -14,10 +13,6 @@ import com.upstox.pulkitnigamtask.util.FormattingUtils
 
 class HoldingsAdapter : ListAdapter<Holding, HoldingsAdapter.HoldingViewHolder>(HoldingDiffCallback()) {
 
-    companion object {
-        private const val TAG = "HoldingsAdapter"
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoldingViewHolder {
         val binding = ItemHoldingBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -28,14 +23,7 @@ class HoldingsAdapter : ListAdapter<Holding, HoldingsAdapter.HoldingViewHolder>(
     }
 
     override fun onBindViewHolder(holder: HoldingViewHolder, position: Int) {
-        val item = getItem(position)
-        Log.d(TAG, "Binding item at position $position: ${item.symbol}")
-        holder.bind(item)
-    }
-
-    override fun submitList(list: List<Holding>?) {
-        Log.d(TAG, "submitList called with ${list?.size ?: 0} items")
-        super.submitList(list)
+        holder.bind(getItem(position))
     }
 
     class HoldingViewHolder(
@@ -43,7 +31,6 @@ class HoldingsAdapter : ListAdapter<Holding, HoldingsAdapter.HoldingViewHolder>(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(holding: Holding) {
-            Log.d(TAG, "Binding holding: ${holding.symbol}")
             binding.apply {
                 setStockInfo(holding)
                 setPnlInfo(holding)
