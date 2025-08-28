@@ -19,4 +19,10 @@
     <string name="ltp_format">LTP: ₹%s</string>
     <string name="net_qty_format">NET QTY: %s</string>
     <string name="pnl_format">P&amp;L: ₹%s</string>
+    
+    <!-- Network Connectivity Strings -->
+    <string name="no_internet_message">No internet connection</string>
+    <string name="retry_fetch_holdings">Retry to fetch holdings</string>
+    <string name="internet_connected">Internet connected</string>
+    <string name="no_internet_available">No internet connection available</string>
 </resources>

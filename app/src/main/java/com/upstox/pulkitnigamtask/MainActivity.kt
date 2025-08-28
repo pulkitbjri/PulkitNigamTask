@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         observeHoldingsData()
         observeLoadingState()
         observeErrorState()
+        observeNetworkConnectivity()
     }
 
     private fun observeHoldingsData() {
@@ -127,10 +128,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun observeNetworkConnectivity() {
+        lifecycleScope.launch {
+            viewModel.isNetworkConnected.collectLatest { isConnected ->
+                updateNetworkMessageBar(isConnected)
+            }
+        }
+    }
+
     private fun setupClickListeners() {
         binding.btnRetry.setOnClickListener { 
-            viewModel.refreshData()
-            showSnackbar("Refreshing portfolio data...")
+            if (viewModel.refreshDataIfConnected()) {
+                showSnackbar("Refreshing portfolio data...")
+            } else {
+                showSnackbar(getString(R.string.no_internet_available), isError = true)
+            }
+        }
+        binding.btnNetworkRetry.setOnClickListener {
+            if (viewModel.refreshDataIfConnected()) {
+                showSnackbar("Retrying to fetch holdings...")
+            } else {
+                showSnackbar(getString(R.string.no_internet_available), isError = true)
+            }
         }
         binding.layoutPortfolioSummary.setOnClickListener { 
             toggleSummaryExpansion()
@@ -207,6 +226,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private var wasNetworkDisconnected = false
+
+    private fun updateNetworkMessageBar(isConnected: Boolean) {
+        binding.networkMessageBar.visibility = if (isConnected) View.GONE else View.VISIBLE
+        
+        // Only show snackbar if network state has been initialized (not on app startup)
+        if (viewModel.isNetworkStateInitialized()) {
+            if (isConnected && wasNetworkDisconnected) {
+                // Show a brief snackbar only when internet is reconnected after being disconnected
+                showSnackbar(getString(R.string.internet_connected), isError = false)
+                // Automatically refresh holdings when internet is restored
+                viewModel.refreshDataIfConnected()
+                wasNetworkDisconnected = false
+            } else if (!isConnected) {
+                // Mark that network was disconnected
+                wasNetworkDisconnected = true
+            }
+        } else if (!isConnected) {
+            // Mark that network was disconnected even on initial state
+            wasNetworkDisconnected = true
+        }
+    }
+
     private fun showSnackbar(message: String, isError: Boolean = false) {
         val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
         
@@ -226,8 +268,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_refresh -> {
-                viewModel.refreshData()
-                showSnackbar("Refreshing portfolio data...")
+                if (viewModel.refreshDataIfConnected()) {
+                    showSnackbar("Refreshing portfolio data...")
+                } else {
+                    showSnackbar(getString(R.string.no_internet_available), isError = true)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

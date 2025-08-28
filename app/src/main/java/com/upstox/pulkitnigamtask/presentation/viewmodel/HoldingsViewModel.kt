@@ -9,10 +9,12 @@ import com.upstox.pulkitnigamtask.domain.use_case.GetProfitableHoldingsUseCase
 import com.upstox.pulkitnigamtask.domain.use_case.GetLossMakingHoldingsUseCase
 import com.upstox.pulkitnigamtask.domain.use_case.SaveHoldingsUseCase
 import com.upstox.pulkitnigamtask.domain.use_case.ClearLocalHoldingsUseCase
+import com.upstox.pulkitnigamtask.util.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +29,8 @@ class HoldingsViewModel @Inject constructor(
     private val getProfitableHoldingsUseCase: GetProfitableHoldingsUseCase,
     private val getLossMakingHoldingsUseCase: GetLossMakingHoldingsUseCase,
     private val saveHoldingsUseCase: SaveHoldingsUseCase,
-    private val clearLocalHoldingsUseCase: ClearLocalHoldingsUseCase
+    private val clearLocalHoldingsUseCase: ClearLocalHoldingsUseCase,
+    private val networkUtils: NetworkUtils
 ) : ViewModel() {
 
     // State flows for different data streams
@@ -49,11 +52,17 @@ class HoldingsViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    private val _isNetworkConnected = MutableStateFlow(true)
+    val isNetworkConnected: StateFlow<Boolean> = _isNetworkConnected.asStateFlow()
+
+    private var isInitialNetworkState = true
+
     init {
         // Load local holdings on initialization
         loadLocalHoldings()
         loadProfitableHoldings()
         loadLossMakingHoldings()
+        observeNetworkConnectivity()
     }
 
     /**
@@ -178,5 +187,41 @@ class HoldingsViewModel @Inject constructor(
         loadLocalHoldings()
         loadProfitableHoldings()
         loadLossMakingHoldings()
+    }
+
+    /**
+     * Refresh data only if network is connected.
+     * @return true if refresh was initiated, false if no network
+     */
+    fun refreshDataIfConnected(): Boolean {
+        return if (_isNetworkConnected.value) {
+            refreshData()
+            true
+        } else {
+            false
+        }
+    }
+
+    /**
+     * Check if the initial network state has been set.
+     * @return true if initial network state has been determined
+     */
+    fun isNetworkStateInitialized(): Boolean {
+        return !isInitialNetworkState
+    }
+
+    /**
+     * Observe network connectivity changes.
+     */
+    private fun observeNetworkConnectivity() {
+        viewModelScope.launch {
+            networkUtils.getNetworkConnectivityFlow().collectLatest { isConnected ->
+                _isNetworkConnected.value = isConnected
+                // Mark that initial network state has been set
+                if (isInitialNetworkState) {
+                    isInitialNetworkState = false
+                }
+            }
+        }
     }
 }
