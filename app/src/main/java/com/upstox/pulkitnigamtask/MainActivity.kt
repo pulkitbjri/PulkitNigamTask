@@ -21,9 +21,14 @@ import com.upstox.pulkitnigamtask.presentation.viewmodel.HoldingsViewModel
 import com.upstox.pulkitnigamtask.util.EdgeToEdgeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+import android.util.Log
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: HoldingsViewModel by viewModels()
@@ -84,6 +89,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
+        Log.d(TAG, "loadData() called")
         viewModel.loadHoldings()
     }
 
@@ -95,10 +101,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeHoldingsData() {
+        Log.d(TAG, "Setting up holdings data observer")
         lifecycleScope.launch {
+            Log.d(TAG, "Starting to collect holdings data")
             viewModel.allHoldings.collectLatest { holdings ->
+                Log.d(TAG, "Received holdings data: ${holdings.size} items")
                 if (holdings.isNotEmpty()) {
                     showSuccessState(holdings)
+                } else {
+                    Log.d(TAG, "Holdings list is empty")
                 }
             }
         }
@@ -107,6 +118,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeLoadingState() {
         lifecycleScope.launch {
             viewModel.isLoading.collectLatest { isLoading ->
+                Log.d(TAG, "Loading state changed: $isLoading")
                 if (isLoading) {
                     showLoadingState()
                 }
@@ -117,6 +129,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeErrorState() {
         lifecycleScope.launch {
             viewModel.error.collectLatest { errorMessage ->
+                Log.d(TAG, "Error state changed: $errorMessage")
                 errorMessage?.let { showErrorState(it) }
             }
         }
@@ -125,6 +138,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeNetworkConnectivity() {
         lifecycleScope.launch {
             viewModel.isNetworkConnected.collectLatest { isConnected ->
+                Log.d(TAG, "Network connectivity changed: $isConnected")
                 updateNetworkMessageBar(isConnected)
             }
         }
@@ -132,6 +146,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.btnRetry.setOnClickListener { 
+            Log.d(TAG, "Retry button clicked")
             if (viewModel.refreshDataIfConnected()) {
                 showSnackbar("Refreshing portfolio data...")
             } else {
@@ -139,11 +154,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.btnNetworkRetry.setOnClickListener {
+            Log.d(TAG, "Network retry button clicked")
             if (viewModel.refreshDataIfConnected()) {
                 showSnackbar("Retrying to fetch holdings...")
             } else {
                 showSnackbar(getString(R.string.no_internet_available), isError = true)
             }
+        }
+        
+        // Test button for debugging
+        binding.btnRetry.setOnLongClickListener {
+            Log.d(TAG, "Long press on retry button - testing API call")
+            viewModel.testApiCall()
+            showSnackbar("Testing API call...")
+            true
         }
         
         // Allow users to dismiss the network message bar by tapping on it
@@ -164,6 +188,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoadingState() {
+        Log.d(TAG, "Showing loading state")
         binding.apply {
             progressBar.visibility = View.VISIBLE
             rvHoldings.visibility = View.GONE
@@ -172,6 +197,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSuccessState(holdings: List<com.upstox.pulkitnigamtask.domain.model.Holding>) {
+        Log.d(TAG, "Showing success state with ${holdings.size} holdings")
         binding.apply {
             progressBar.visibility = View.GONE
             rvHoldings.visibility = View.VISIBLE
@@ -183,6 +209,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showErrorState(message: String) {
+        Log.d(TAG, "Showing error state: $message")
         binding.apply {
             progressBar.visibility = View.GONE
             rvHoldings.visibility = View.GONE
@@ -194,6 +221,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateHoldingsList(holdings: List<com.upstox.pulkitnigamtask.domain.model.Holding>) {
+        Log.d(TAG, "Updating holdings list with ${holdings.size} items")
         holdingsAdapter.submitList(holdings)
     }
 
@@ -203,6 +231,8 @@ class MainActivity : AppCompatActivity() {
         val totalInvestment: Double = holdings.sumOf { it.totalInvestment }
         val totalPnl: Double = currentValue - totalInvestment
         val todaysPnl: Double = holdings.sumOf { it.todaysPnl }
+        
+        Log.d(TAG, "Updating portfolio summary - Current Value: $currentValue, Total Investment: $totalInvestment, Total PnL: $totalPnl, Today's PnL: $todaysPnl")
         
         binding.apply {
             tvCurrentValue.text = getString(R.string.currency_format, currentValue)
@@ -295,6 +325,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_refresh -> {
+                Log.d(TAG, "Refresh menu item clicked")
                 if (viewModel.refreshDataIfConnected()) {
                     showSnackbar(getString(R.string.refreshing_portfolio))
                 } else {
