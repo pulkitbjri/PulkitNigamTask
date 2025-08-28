@@ -8,6 +8,7 @@ import com.upstox.pulkitnigamtask.domain.model.Holding
 import com.upstox.pulkitnigamtask.domain.repository.HoldingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -17,23 +18,21 @@ class HoldingsRepositoryImpl @Inject constructor(
 ) : HoldingsRepository {
 
     override suspend fun getHoldings(): Flow<Result<List<Holding>>> = flow {
+        val response = apiService.getHoldings()
+        val holdings = response.data.userHolding.map { it.toDomain() }
+        
+        // Save to local database for caching
+        saveHoldings(holdings)
+        
+        emit(Result.success(holdings))
+    }.catch { e ->
+        // If API fails, try to get from local database
         try {
-            val response = apiService.getHoldings()
-            val holdings = response.data.userHolding.map { it.toDomain() }
-            
-            // Save to local database for caching
-            saveHoldings(holdings)
-            
-            emit(Result.success(holdings))
-        } catch (e: Exception) {
-            // If API fails, try to get from local database
-            try {
-                val localHoldings = holdingDao.getAllHoldingsList()
-                val domainHoldings = HoldingMapper.toDomainList(localHoldings)
-                emit(Result.success(domainHoldings))
-            } catch (_: Exception) {
-                emit(Result.failure(e))
-            }
+            val localHoldings = holdingDao.getAllHoldingsList()
+            val domainHoldings = HoldingMapper.toDomainList(localHoldings)
+            emit(Result.success(domainHoldings))
+        } catch (dbException: Exception) {
+            emit(Result.failure(e))
         }
     }
 
