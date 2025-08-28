@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -151,6 +150,19 @@ class MainActivity : AppCompatActivity() {
                 showSnackbar(getString(R.string.no_internet_available), isError = true)
             }
         }
+        
+        // Allow users to dismiss the network message bar by tapping on it
+        binding.networkMessageBar.setOnClickListener {
+            // Hide the network message bar with animation (slide up)
+            binding.networkMessageBar.animate()
+                .translationY(-100f)
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction {
+                    binding.networkMessageBar.visibility = View.GONE
+                }
+                .start()
+        }
         binding.layoutPortfolioSummary.setOnClickListener { 
             toggleSummaryExpansion()
         }
@@ -229,7 +241,27 @@ class MainActivity : AppCompatActivity() {
     private var wasNetworkDisconnected = false
 
     private fun updateNetworkMessageBar(isConnected: Boolean) {
-        binding.networkMessageBar.visibility = if (isConnected) View.GONE else View.VISIBLE
+        if (isConnected) {
+            // Hide network message bar with animation (slide up)
+            if (binding.networkMessageBar.visibility == View.VISIBLE) {
+                binding.networkMessageBar.animate()
+                    .translationY(-100f)
+                    .alpha(0f)
+                    .setDuration(300)
+                    .withEndAction {
+                        binding.networkMessageBar.visibility = View.GONE
+                    }
+                    .start()
+            }
+        } else {
+            // Show network message bar with animation (slide down)
+            binding.networkMessageBar.visibility = View.VISIBLE
+            binding.networkMessageBar.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(300)
+                .start()
+        }
         
         // Only show snackbar if network state has been initialized (not on app startup)
         if (viewModel.isNetworkStateInitialized()) {
@@ -278,6 +310,7 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
 
 }

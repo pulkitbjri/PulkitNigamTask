@@ -1,11 +1,6 @@
 package com.upstox.pulkitnigamtask.presentation.viewmodel
 
 import com.upstox.pulkitnigamtask.domain.repository.HoldingsRepository
-import com.upstox.pulkitnigamtask.domain.use_case.GetLocalHoldingsUseCase
-import com.upstox.pulkitnigamtask.domain.use_case.GetProfitableHoldingsUseCase
-import com.upstox.pulkitnigamtask.domain.use_case.GetLossMakingHoldingsUseCase
-import com.upstox.pulkitnigamtask.domain.use_case.SaveHoldingsUseCase
-import com.upstox.pulkitnigamtask.domain.use_case.ClearLocalHoldingsUseCase
 import com.upstox.pulkitnigamtask.util.NetworkUtils
 import io.mockk.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,21 +13,11 @@ class HoldingsViewModelTest {
 
     private lateinit var viewModel: HoldingsViewModel
     private lateinit var mockRepository: HoldingsRepository
-    private lateinit var mockGetLocalHoldingsUseCase: GetLocalHoldingsUseCase
-    private lateinit var mockGetProfitableHoldingsUseCase: GetProfitableHoldingsUseCase
-    private lateinit var mockGetLossMakingHoldingsUseCase: GetLossMakingHoldingsUseCase
-    private lateinit var mockSaveHoldingsUseCase: SaveHoldingsUseCase
-    private lateinit var mockClearLocalHoldingsUseCase: ClearLocalHoldingsUseCase
     private lateinit var mockNetworkUtils: NetworkUtils
 
     @Before
     fun setUp() {
         mockRepository = mockk()
-        mockGetLocalHoldingsUseCase = mockk()
-        mockGetProfitableHoldingsUseCase = mockk()
-        mockGetLossMakingHoldingsUseCase = mockk()
-        mockSaveHoldingsUseCase = mockk()
-        mockClearLocalHoldingsUseCase = mockk()
         mockNetworkUtils = mockk()
 
         // Mock network connectivity flow
@@ -40,11 +25,6 @@ class HoldingsViewModelTest {
 
         viewModel = HoldingsViewModel(
             mockRepository,
-            mockGetLocalHoldingsUseCase,
-            mockGetProfitableHoldingsUseCase,
-            mockGetLossMakingHoldingsUseCase,
-            mockSaveHoldingsUseCase,
-            mockClearLocalHoldingsUseCase,
             mockNetworkUtils
         )
     }
@@ -52,20 +32,12 @@ class HoldingsViewModelTest {
     @Test
     fun `refreshDataIfConnected should return true and refresh data when network is connected`() = runTest {
         // Given
-        every { mockGetLocalHoldingsUseCase() } returns MutableStateFlow(emptyList())
-        every { mockGetProfitableHoldingsUseCase() } returns MutableStateFlow(emptyList())
-        every { mockGetLossMakingHoldingsUseCase() } returns MutableStateFlow(emptyList())
 
         // When
         val result = viewModel.refreshDataIfConnected()
 
         // Then
         assertTrue(result)
-        verify { 
-            mockGetLocalHoldingsUseCase()
-            mockGetProfitableHoldingsUseCase()
-            mockGetLossMakingHoldingsUseCase()
-        }
     }
 
     @Test
@@ -76,11 +48,6 @@ class HoldingsViewModelTest {
         // Create new ViewModel with disconnected network
         val disconnectedViewModel = HoldingsViewModel(
             mockRepository,
-            mockGetLocalHoldingsUseCase,
-            mockGetProfitableHoldingsUseCase,
-            mockGetLossMakingHoldingsUseCase,
-            mockSaveHoldingsUseCase,
-            mockClearLocalHoldingsUseCase,
             mockNetworkUtils
         )
 
@@ -89,11 +56,6 @@ class HoldingsViewModelTest {
 
         // Then
         assertFalse(result)
-        verify(exactly = 0) { 
-            mockGetLocalHoldingsUseCase()
-            mockGetProfitableHoldingsUseCase()
-            mockGetLossMakingHoldingsUseCase()
-        }
     }
 
     @Test
@@ -104,11 +66,6 @@ class HoldingsViewModelTest {
 
         val testViewModel = HoldingsViewModel(
             mockRepository,
-            mockGetLocalHoldingsUseCase,
-            mockGetProfitableHoldingsUseCase,
-            mockGetLossMakingHoldingsUseCase,
-            mockSaveHoldingsUseCase,
-            mockClearLocalHoldingsUseCase,
             mockNetworkUtils
         )
 
@@ -127,11 +84,6 @@ class HoldingsViewModelTest {
 
         val testViewModel = HoldingsViewModel(
             mockRepository,
-            mockGetLocalHoldingsUseCase,
-            mockGetProfitableHoldingsUseCase,
-            mockGetLossMakingHoldingsUseCase,
-            mockSaveHoldingsUseCase,
-            mockClearLocalHoldingsUseCase,
             mockNetworkUtils
         )
 

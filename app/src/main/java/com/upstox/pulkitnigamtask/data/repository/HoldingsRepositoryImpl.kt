@@ -5,7 +5,6 @@ import com.upstox.pulkitnigamtask.data.local.mapper.HoldingMapper
 import com.upstox.pulkitnigamtask.data.remote.ApiService
 import com.upstox.pulkitnigamtask.data.remote.dto.HoldingDto
 import com.upstox.pulkitnigamtask.domain.model.Holding
-import com.upstox.pulkitnigamtask.domain.model.PortfolioSummary
 import com.upstox.pulkitnigamtask.domain.repository.HoldingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -32,7 +31,7 @@ class HoldingsRepositoryImpl @Inject constructor(
                 val localHoldings = holdingDao.getAllHoldingsList()
                 val domainHoldings = HoldingMapper.toDomainList(localHoldings)
                 emit(Result.success(domainHoldings))
-            } catch (dbException: Exception) {
+            } catch (_: Exception) {
                 emit(Result.failure(e))
             }
         }
