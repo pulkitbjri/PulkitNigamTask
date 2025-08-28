@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.upstox.pulkitnigamtask.databinding.ActivityMainBinding
 import com.upstox.pulkitnigamtask.presentation.adapter.HoldingsAdapter
-import com.upstox.pulkitnigamtask.presentation.helper.PortfolioUIHelper
 
 import com.upstox.pulkitnigamtask.presentation.viewmodel.HoldingsViewModel
 import com.upstox.pulkitnigamtask.util.EdgeToEdgeHelper
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: HoldingsViewModel by viewModels()
     private val holdingsAdapter = HoldingsAdapter()
-    private lateinit var portfolioUIHelper: PortfolioUIHelper
     private var isSummaryExpanded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         setupEdgeToEdge()
         setupRecyclerView()
         setupToolbar()
-        setupUIHelper()
     }
 
     private fun setupEdgeToEdge() {
@@ -84,10 +81,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.apply {
             title = getString(R.string.portfolio_title)
         }
-    }
-
-    private fun setupUIHelper() {
-        portfolioUIHelper = PortfolioUIHelper(this)
     }
 
     private fun loadData() {

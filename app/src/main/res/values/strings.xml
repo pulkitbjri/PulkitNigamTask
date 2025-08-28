@@ -15,7 +15,6 @@
     <string name="total_pnl_label">Total Profit &amp; Loss*:</string>
     
     <!-- Holdings Item Strings -->
-    <string name="t1_holding">T1 Holding</string>
     <string name="ltp_format">LTP: ₹%s</string>
     <string name="net_qty_format">NET QTY: %s</string>
 

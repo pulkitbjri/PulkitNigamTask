@@ -34,7 +34,6 @@ class HoldingsAdapter : ListAdapter<Holding, HoldingsAdapter.HoldingViewHolder>(
             binding.apply {
                 setStockInfo(holding)
                 setPnlInfo(holding)
-                hideUnusedElements()
             }
         }
 
@@ -51,10 +50,6 @@ class HoldingsAdapter : ListAdapter<Holding, HoldingsAdapter.HoldingViewHolder>(
                 tvPnl.text = formatPnl(holding.pnl)
                 tvPnl.setTextColor(getPnlColor(holding.pnl))
             }
-        }
-
-        private fun hideUnusedElements() {
-            binding.tvT1Tag.visibility = android.view.View.GONE
         }
 
         private fun formatLtp(ltp: Double): String = FormattingUtils.formatLtp(ltp)

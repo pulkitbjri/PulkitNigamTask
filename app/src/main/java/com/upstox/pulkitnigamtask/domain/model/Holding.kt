@@ -42,13 +42,4 @@ data class Holding(
         get() = avgPrice * quantity
 }
 
-/**
- * Domain model representing the portfolio summary with calculated values.
- * Contains aggregated portfolio statistics.
- */
-data class PortfolioSummary(
-    val currentValue: Double,
-    val totalInvestment: Double,
-    val totalPnl: Double,
-    val todaysPnl: Double
-)
+

@@ -1,8 +1,6 @@
 package com.upstox.pulkitnigamtask.di.modules.domain
 
 import com.upstox.pulkitnigamtask.domain.repository.HoldingsRepository
-import com.upstox.pulkitnigamtask.domain.service.PortfolioCalculationService
-import com.upstox.pulkitnigamtask.domain.use_case.GetHoldingsWithSummaryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,17 +14,5 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
-
-    /**
-     * Provides GetHoldingsWithSummaryUseCase for fetching holdings and calculating summary.
-     * This use case handles the complete business logic for portfolio data retrieval.
-     */
-    @Provides
-    @Singleton
-    fun provideGetHoldingsWithSummaryUseCase(
-        repository: HoldingsRepository,
-        portfolioCalculationService: PortfolioCalculationService
-    ): GetHoldingsWithSummaryUseCase {
-        return GetHoldingsWithSummaryUseCase(repository, portfolioCalculationService)
-    }
+    // All use cases are now provided directly in their respective modules
 }

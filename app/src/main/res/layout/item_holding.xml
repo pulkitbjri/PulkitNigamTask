@@ -38,16 +38,7 @@
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?attr/colorOnSurface" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/tvT1Tag"
-                style="@style/Widget.Material3.Chip.Assist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/t1_holding"
-                android:visibility="gone"
-                app:chipMinHeight="20dp"
-                app:chipMinTouchTargetSize="24dp" />
+
 
         </LinearLayout>
 
