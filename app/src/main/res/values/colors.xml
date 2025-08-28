@@ -1,10 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Material 3 Color System -->
+    
+    <!-- Primary Colors -->
+    <color name="primary_0">#000000</color>
+    <color name="primary_10">#001D36</color>
+    <color name="primary_20">#003258</color>
+    <color name="primary_30">#004A7A</color>
+    <color name="primary_40">#00639D</color>
+    <color name="primary_50">#007DC1</color>
+    <color name="primary_60">#0098E6</color>
+    <color name="primary_70">#4DB3FF</color>
+    <color name="primary_80">#80CCFF</color>
+    <color name="primary_90">#B3E0FF</color>
+    <color name="primary_95">#D6EFFF</color>
+    <color name="primary_99">#FDFCFF</color>
+    <color name="primary_100">#FFFFFF</color>
+    
+    <!-- On Primary Colors -->
+    <color name="on_primary_0">#000000</color>
+    <color name="on_primary_10">#FFFFFF</color>
+    <color name="on_primary_20">#FFFFFF</color>
+    <color name="on_primary_30">#FFFFFF</color>
+    <color name="on_primary_40">#FFFFFF</color>
+    <color name="on_primary_50">#FFFFFF</color>
+    <color name="on_primary_60">#000000</color>
+    <color name="on_primary_70">#000000</color>
+    <color name="on_primary_80">#000000</color>
+    <color name="on_primary_90">#000000</color>
+    <color name="on_primary_95">#000000</color>
+    <color name="on_primary_99">#000000</color>
+    <color name="on_primary_100">#000000</color>
+    
+    <!-- Secondary Colors -->
+    <color name="secondary_0">#000000</color>
+    <color name="secondary_10">#1A1C00</color>
+    <color name="secondary_20">#2F3100</color>
+    <color name="secondary_30">#454800</color>
+    <color name="secondary_40">#5C5F00</color>
+    <color name="secondary_50">#747700</color>
+    <color name="secondary_60">#8E9100</color>
+    <color name="secondary_70">#A9AC00</color>
+    <color name="secondary_80">#C5C800</color>
+    <color name="secondary_90">#E1E400</color>
+    <color name="secondary_95">#F0F300</color>
+    <color name="secondary_99">#FDFCFF</color>
+    <color name="secondary_100">#FFFFFF</color>
+    
+    <!-- On Secondary Colors -->
+    <color name="on_secondary_0">#000000</color>
+    <color name="on_secondary_10">#000000</color>
+    <color name="on_secondary_20">#000000</color>
+    <color name="on_secondary_30">#000000</color>
+    <color name="on_secondary_40">#000000</color>
+    <color name="on_secondary_50">#000000</color>
+    <color name="on_secondary_60">#000000</color>
+    <color name="on_secondary_70">#000000</color>
+    <color name="on_secondary_80">#000000</color>
+    <color name="on_secondary_90">#000000</color>
+    <color name="on_secondary_95">#000000</color>
+    <color name="on_secondary_99">#000000</color>
+    <color name="on_secondary_100">#000000</color>
+    
+    <!-- Surface Colors -->
+    <color name="surface_0">#000000</color>
+    <color name="surface_10">#191C20</color>
+    <color name="surface_20">#2F3136</color>
+    <color name="surface_30">#46474C</color>
+    <color name="surface_40">#5E5F64</color>
+    <color name="surface_50">#77787D</color>
+    <color name="surface_60">#919297</color>
+    <color name="surface_70">#ACADB2</color>
+    <color name="surface_80">#C8C9CE</color>
+    <color name="surface_90">#E4E5EA</color>
+    <color name="surface_95">#F2F3F8</color>
+    <color name="surface_99">#FDFCFF</color>
+    <color name="surface_100">#FFFFFF</color>
+    
+    <!-- On Surface Colors -->
+    <color name="on_surface_0">#000000</color>
+    <color name="on_surface_10">#E1E2E7</color>
+    <color name="on_surface_20">#C5C6CB</color>
+    <color name="on_surface_30">#A9AAB0</color>
+    <color name="on_surface_40">#8E8F95</color>
+    <color name="on_surface_50">#74757B</color>
+    <color name="on_surface_60">#5C5D63</color>
+    <color name="on_surface_70">#46474C</color>
+    <color name="on_surface_80">#2F3136</color>
+    <color name="on_surface_90">#191C20</color>
+    <color name="on_surface_95">#0C0E12</color>
+    <color name="on_surface_99">#000000</color>
+    <color name="on_surface_100">#000000</color>
+    
+    <!-- Semantic Colors -->
+    <color name="error_10">#410002</color>
+    <color name="error_20">#690005</color>
+    <color name="error_30">#93000A</color>
+    <color name="error_40">#BA1A1A</color>
+    <color name="error_50">#DE3730</color>
+    <color name="error_60">#FF5449</color>
+    <color name="error_70">#FF897D</color>
+    <color name="error_80">#FFB4AB</color>
+    <color name="error_90">#FFDAD6</color>
+    <color name="error_95">#FFEDEA</color>
+    <color name="error_99">#FFFBFF</color>
+    
+    <color name="success_40">#006C4C</color>
+    <color name="success_50">#008A5C</color>
+    <color name="success_60">#00A870</color>
+    <color name="success_70">#00C784</color>
+    <color name="success_80">#00E698</color>
+    <color name="success_90">#00F8A8</color>
+    <color name="success_95">#00FFB0</color>
+    <color name="success_99">#F0FFF4</color>
+    
+    <!-- Legacy Colors (for backward compatibility) -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary_color">@color/primary_60</color>
+    <color name="primary_dark">@color/primary_40</color>
+    <color name="accent_color">@color/secondary_60</color>
+    <color name="colorPrimary">@color/primary_60</color>
+    
+    <!-- Additional Utility Colors -->
+    <color name="outline">@color/on_surface_60</color>
+    <color name="outline_variant">@color/on_surface_80</color>
+    <color name="scrim">#52000000</color>
+    <color name="inverse_on_surface">@color/surface_10</color>
+    <color name="inverse_surface">@color/on_surface_90</color>
+    <color name="inverse_primary">@color/primary_80</color>
+    <color name="shadow">#000000</color>
+    <color name="surface_tint">@color/primary_60</color>
+    <color name="outline_variant_12">#1F000000</color>
 </resources>

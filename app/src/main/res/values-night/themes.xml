@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme for night mode. -->
     <style name="Theme.PulkitNigamTask" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Material 3 Color Tokens -->
+        <!-- Material 3 Color Tokens for Dark Theme -->
         
         <!-- Primary Colors -->
-        <item name="colorPrimary">@color/primary_60</item>
-        <item name="colorOnPrimary">@color/on_primary_60</item>
-        <item name="colorPrimaryContainer">@color/primary_90</item>
-        <item name="colorOnPrimaryContainer">@color/on_primary_10</item>
+        <item name="colorPrimary">@color/primary_80</item>
+        <item name="colorOnPrimary">@color/on_primary_80</item>
+        <item name="colorPrimaryContainer">@color/primary_30</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_90</item>
         
         <!-- Secondary Colors -->
-        <item name="colorSecondary">@color/secondary_60</item>
-        <item name="colorOnSecondary">@color/on_secondary_60</item>
-        <item name="colorSecondaryContainer">@color/secondary_90</item>
-        <item name="colorOnSecondaryContainer">@color/on_secondary_10</item>
+        <item name="colorSecondary">@color/secondary_80</item>
+        <item name="colorOnSecondary">@color/on_secondary_80</item>
+        <item name="colorSecondaryContainer">@color/secondary_30</item>
+        <item name="colorOnSecondaryContainer">@color/on_secondary_90</item>
         
         <!-- Tertiary Colors -->
-        <item name="colorTertiary">@color/primary_80</item>
-        <item name="colorOnTertiary">@color/on_primary_80</item>
-        <item name="colorTertiaryContainer">@color/primary_95</item>
-        <item name="colorOnTertiaryContainer">@color/on_primary_20</item>
+        <item name="colorTertiary">@color/primary_70</item>
+        <item name="colorOnTertiary">@color/on_primary_70</item>
+        <item name="colorTertiaryContainer">@color/primary_30</item>
+        <item name="colorOnTertiaryContainer">@color/on_primary_90</item>
         
         <!-- Surface Colors -->
-        <item name="colorSurface">@color/surface_99</item>
-        <item name="colorOnSurface">@color/on_surface_99</item>
-        <item name="colorSurfaceVariant">@color/surface_90</item>
-        <item name="colorOnSurfaceVariant">@color/on_surface_70</item>
+        <item name="colorSurface">@color/surface_10</item>
+        <item name="colorOnSurface">@color/on_surface_10</item>
+        <item name="colorSurfaceVariant">@color/surface_20</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_30</item>
         
         <!-- Background Colors -->
-        <item name="colorSurfaceBright">@color/surface_100</item>
-        <item name="colorSurfaceDim">@color/surface_95</item>
+        <item name="colorSurfaceBright">@color/surface_20</item>
+        <item name="colorSurfaceDim">@color/surface_0</item>
         
         <!-- Outline Colors -->
-        <item name="colorOutline">@color/outline</item>
-        <item name="colorOutlineVariant">@color/outline_variant</item>
+        <item name="colorOutline">@color/outline_variant</item>
+        <item name="colorOutlineVariant">@color/outline</item>
         
         <!-- Error Colors -->
-        <item name="colorError">@color/error_50</item>
-        <item name="colorOnError">@color/white</item>
-        <item name="colorErrorContainer">@color/error_95</item>
-        <item name="colorOnErrorContainer">@color/error_10</item>
+        <item name="colorError">@color/error_80</item>
+        <item name="colorOnError">@color/black</item>
+        <item name="colorErrorContainer">@color/error_30</item>
+        <item name="colorOnErrorContainer">@color/error_90</item>
         
         <!-- Legacy Colors (for backward compatibility) -->
-        <item name="colorPrimaryVariant">@color/primary_40</item>
-        <item name="colorSecondaryVariant">@color/secondary_40</item>
+        <item name="colorPrimaryVariant">@color/primary_70</item>
+        <item name="colorSecondaryVariant">@color/secondary_70</item>
         
         <!-- Edge-to-Edge Support -->
         <item name="android:statusBarColor">@android:color/transparent</item>

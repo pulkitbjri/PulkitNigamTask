@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Material 3 Component Styles -->
+    
+    <!-- Card Styles -->
+    <style name="Widget.Material3.CardView.Elevated" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">1dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+    
+    <style name="Widget.Material3.CardView.Filled" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurfaceVariant</item>
+    </style>
+    
+    <!-- Button Styles -->
+    <style name="Widget.Material3.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    </style>
+    
+    <style name="Widget.Material3.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">20dp</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    </style>
+    
+    <!-- Chip Styles -->
+    <style name="Widget.Material3.Chip.Assist" parent="Widget.Material3.Chip.Assist">
+        <item name="chipBackgroundColor">?attr/colorSecondaryContainer</item>
+        <item name="chipStrokeColor">?attr/colorSecondary</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">?attr/colorOnSecondaryContainer</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelSmall</item>
+    </style>
+    
+    <!-- Progress Indicator Styles -->
+    <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="indicatorColor">?attr/colorPrimary</item>
+        <item name="trackColor">?attr/colorSurfaceVariant</item>
+    </style>
+    
+    <!-- Text Styles -->
+    <style name="TextAppearance.Material3.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    
+    <style name="TextAppearance.Material3.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    
+    <style name="TextAppearance.Material3.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    
+    <style name="TextAppearance.Material3.Label" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+    
+    <!-- Icon Styles -->
+    <style name="Widget.Material3.Icon" parent="">
+        <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="iconSize">24dp</item>
+    </style>
+    
+    <style name="Widget.Material3.Icon.Primary" parent="Widget.Material3.Icon">
+        <item name="iconTint">?attr/colorPrimary</item>
+    </style>
+    
+    <style name="Widget.Material3.Icon.Error" parent="Widget.Material3.Icon">
+        <item name="iconTint">?attr/colorError</item>
+    </style>
+    
+</resources>

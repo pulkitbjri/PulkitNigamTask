@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:elevation="0dp"
+        android:stateListAnimator="@null">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/portfolio_title"
+            app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
+            app:titleTextColor="?attr/colorOnSurface"
+            app:menu="@menu/main_menu" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainContentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Loading State -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            style="@style/Widget.Material3.CircularProgressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Error State -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/errorLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:visibility="gone"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="1dp"
+            app:cardBackgroundColor="?attr/colorErrorContainer"
+            app:strokeColor="?attr/colorError"
+            app:strokeWidth="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="24dp">
+
+                <ImageView
+                    android:id="@+id/ivErrorIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_error"
+                    android:tint="?attr/colorError"
+                    android:contentDescription="@string/error_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvErrorMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Something went wrong"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnErrorContainer"
+                    app:layout_constraintTop_toBottomOf="@id/ivErrorIcon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRetry"
+                    style="@style/Widget.Material3.Button.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/retry"
+                    app:icon="@drawable/ic_refresh"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvErrorMessage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Content -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHoldings"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:overScrollMode="never"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/separator" />
+
+        <!-- Separator -->
+        <View
+            android:id="@+id/separator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:background="?attr/colorOutlineVariant"
+            app:layout_constraintBottom_toTopOf="@id/layoutPortfolioSummary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Portfolio Summary -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layoutPortfolioSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="1dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeColor="?attr/colorOutlineVariant"
+            app:strokeWidth="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <!-- Summary Header -->
+                <TextView
+                    android:id="@+id/tvProfitLossHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profit_loss_header"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ivExpandArrow" />
+
+                <ImageView
+                    android:id="@+id/ivExpandArrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:contentDescription="@string/expand_collapse"
+                    android:tint="?attr/colorOnSurfaceVariant"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/tvProfitLossHeader" />
+
+                <!-- Summary Details (Collapsible) -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutSummaryDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfitLossHeader">
+
+                    <!-- Current Value Row -->
+                    <TextView
+                        android:id="@+id/tvCurrentValueLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/current_value_label"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvCurrentValue" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₹0.00"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        app:layout_constraintTop_toTopOf="@id/tvCurrentValueLabel"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Total Investment Row -->
+                    <TextView
+                        android:id="@+id/tvTotalInvestmentLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_investment_label"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvCurrentValueLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvTotalInvestment" />
+
+                    <TextView
+                        android:id="@+id/tvTotalInvestment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₹0.00"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        app:layout_constraintTop_toTopOf="@id/tvTotalInvestmentLabel"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Today's P&L Row -->
+                    <TextView
+                        android:id="@+id/tvTodaysPnlLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/todays_pnl_label"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTotalInvestmentLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvTodaysPnl" />
+
+                    <TextView
+                        android:id="@+id/tvTodaysPnl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₹0.00"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        app:layout_constraintTop_toTopOf="@id/tvTodaysPnlLabel"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Total P&L Row -->
+                    <TextView
+                        android:id="@+id/tvTotalPnlLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_pnl_label"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTodaysPnlLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvTotalPnl" />
+
+                    <TextView
+                        android:id="@+id/tvTotalPnl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₹0.00 (0.00%)"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        app:layout_constraintTop_toTopOf="@id/tvTotalPnlLabel"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

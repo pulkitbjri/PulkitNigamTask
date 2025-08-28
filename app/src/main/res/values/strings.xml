@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">PulkitNigamTask</string>
+    <string name="portfolio_title">Portfolio - Holdings</string>
+    
+    <!-- Error and Action Strings -->
+    <string name="retry">Retry</string>
+    <string name="expand_collapse">Expand/Collapse</string>
+    <string name="error_icon">Error Icon</string>
+    
+    <!-- Portfolio Summary Strings -->
+    <string name="profit_loss_header">Profit &amp; Loss*</string>
+    <string name="current_value_label">Current value*:</string>
+    <string name="total_investment_label">Total investment*:</string>
+    <string name="todays_pnl_label">Today\'s Profit &amp; Loss*:</string>
+    <string name="total_pnl_label">Total Profit &amp; Loss*:</string>
+    
+    <!-- Holdings Item Strings -->
+    <string name="t1_holding">T1 Holding</string>
+    <string name="ltp_format">LTP: ₹%s</string>
+    <string name="net_qty_format">NET QTY: %s</string>
+    <string name="pnl_format">P&amp;L: ₹%s</string>
 </resources>
