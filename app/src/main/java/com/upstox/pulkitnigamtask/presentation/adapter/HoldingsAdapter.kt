@@ -26,6 +26,23 @@ class HoldingsAdapter : ListAdapter<Holding, HoldingsAdapter.HoldingViewHolder>(
         holder.bind(getItem(position))
     }
 
+    override fun submitList(list: List<Holding>?) {
+        android.util.Log.d("HoldingsAdapter", "submitList called with ${list?.size ?: 0} items")
+        super.submitList(list)
+    }
+
+    /**
+     * Force refresh the adapter by submitting a new list.
+     * This can be used to bypass DiffUtil if there are issues with change detection.
+     */
+    fun forceRefresh(list: List<Holding>?) {
+        android.util.Log.d("HoldingsAdapter", "forceRefresh called with ${list?.size ?: 0} items")
+        // Create a new list to force the adapter to update
+        val newList = list?.toList() ?: emptyList()
+        submitList(null) // Clear current list
+        submitList(newList) // Set new list
+    }
+
     class HoldingViewHolder(
         private val binding: ItemHoldingBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -66,11 +83,15 @@ class HoldingsAdapter : ListAdapter<Holding, HoldingsAdapter.HoldingViewHolder>(
 
     private class HoldingDiffCallback : DiffUtil.ItemCallback<Holding>() {
         override fun areItemsTheSame(oldItem: Holding, newItem: Holding): Boolean {
-            return oldItem.symbol == newItem.symbol
+            val areSame = oldItem.symbol == newItem.symbol
+            android.util.Log.d("HoldingsAdapter", "areItemsTheSame: $areSame (${oldItem.symbol} vs ${newItem.symbol})")
+            return areSame
         }
 
         override fun areContentsTheSame(oldItem: Holding, newItem: Holding): Boolean {
-            return oldItem == newItem
+            val areSame = oldItem == newItem
+            android.util.Log.d("HoldingsAdapter", "areContentsTheSame: $areSame (${oldItem.symbol})")
+            return areSame
         }
     }
 }

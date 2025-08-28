@@ -97,9 +97,12 @@ class MainActivity : AppCompatActivity() {
     private fun observeHoldingsData() {
         lifecycleScope.launch {
             viewModel.allHoldings.collectLatest { holdings ->
-                if (holdings.isNotEmpty()) {
-                    showSuccessState(holdings)
-                }
+                // Add logging to debug data flow
+                android.util.Log.d("MainActivity", "Received holdings data: ${holdings.size} items")
+                
+                // Always show success state when we receive holdings data, regardless of whether it's empty
+                // This ensures UI updates even when the same data is returned
+                showSuccessState(holdings)
             }
         }
     }
@@ -107,9 +110,12 @@ class MainActivity : AppCompatActivity() {
     private fun observeLoadingState() {
         lifecycleScope.launch {
             viewModel.isLoading.collectLatest { isLoading ->
+                android.util.Log.d("MainActivity", "Loading state changed: $isLoading")
                 if (isLoading) {
                     showLoadingState()
                 }
+                // Note: We don't handle !isLoading here because observeHoldingsData will handle the success state
+                // and observeErrorState will handle error cases
             }
         }
     }
@@ -132,6 +138,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.btnRetry.setOnClickListener { 
+            android.util.Log.d("MainActivity", "Retry button clicked")
             if (viewModel.refreshDataIfConnected()) {
                 showSnackbar("Refreshing portfolio data...")
             } else {
@@ -139,6 +146,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.btnNetworkRetry.setOnClickListener {
+            android.util.Log.d("MainActivity", "Network retry button clicked")
             if (viewModel.refreshDataIfConnected()) {
                 showSnackbar("Retrying to fetch holdings...")
             } else {
@@ -172,6 +180,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSuccessState(holdings: List<com.upstox.pulkitnigamtask.domain.model.Holding>) {
+        android.util.Log.d("MainActivity", "showSuccessState called with ${holdings.size} holdings")
+        
         binding.apply {
             progressBar.visibility = View.GONE
             rvHoldings.visibility = View.VISIBLE
@@ -194,6 +204,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateHoldingsList(holdings: List<com.upstox.pulkitnigamtask.domain.model.Holding>) {
+        android.util.Log.d("MainActivity", "updateHoldingsList called with ${holdings.size} holdings")
+        
+        // Submit the new list to the adapter
         holdingsAdapter.submitList(holdings)
     }
 

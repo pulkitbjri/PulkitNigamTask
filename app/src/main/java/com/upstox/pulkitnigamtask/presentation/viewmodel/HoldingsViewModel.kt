@@ -51,6 +51,7 @@ class HoldingsViewModel @Inject constructor(
      */
     fun loadHoldings() {
         viewModelScope.launch {
+            android.util.Log.d("HoldingsViewModel", "loadHoldings() called")
             _isLoading.value = true
             _error.value = null
             
@@ -58,16 +59,19 @@ class HoldingsViewModel @Inject constructor(
                 repository.getHoldings().collect { result ->
                     result.fold(
                         onSuccess = { holdings ->
+                            android.util.Log.d("HoldingsViewModel", "loadHoldings success: ${holdings.size} items")
                             _allHoldings.value = holdings
                             _isLoading.value = false
                         },
                         onFailure = { exception ->
+                            android.util.Log.e("HoldingsViewModel", "loadHoldings failed: ${exception.message}")
                             _error.value = exception.message ?: "Unknown error occurred"
                             _isLoading.value = false
                         }
                     )
                 }
             } catch (e: Exception) {
+                android.util.Log.e("HoldingsViewModel", "loadHoldings exception: ${e.message}")
                 _error.value = e.message ?: "Failed to load holdings"
                 _isLoading.value = false
             }
@@ -75,12 +79,40 @@ class HoldingsViewModel @Inject constructor(
     }
 
 
-
     /**
      * Refresh all data (remote).
      */
     fun refreshData() {
-        loadHoldings()
+        viewModelScope.launch {
+            android.util.Log.d("HoldingsViewModel", "refreshData() called")
+            _isLoading.value = true
+            _error.value = null
+            
+            // Force UI update by temporarily clearing the data
+            // This ensures the StateFlow emits even if the new data is the same
+            _allHoldings.value = emptyList()
+            
+            try {
+                repository.getHoldings().collect { result ->
+                    result.fold(
+                        onSuccess = { holdings ->
+                            android.util.Log.d("HoldingsViewModel", "refreshData success: ${holdings.size} items")
+                            _allHoldings.value = holdings
+                            _isLoading.value = false
+                        },
+                        onFailure = { exception ->
+                            android.util.Log.e("HoldingsViewModel", "refreshData failed: ${exception.message}")
+                            _error.value = exception.message ?: "Unknown error occurred"
+                            _isLoading.value = false
+                        }
+                    )
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("HoldingsViewModel", "refreshData exception: ${e.message}")
+                _error.value = e.message ?: "Failed to load holdings"
+                _isLoading.value = false
+            }
+        }
     }
 
     /**
