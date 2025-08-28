@@ -29,11 +29,26 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
+    }
+    
+    // Configure kapt to use the correct Kotlin version
+    kapt {
+        correctErrorTypes = true
+        useBuildCache = true
+    }
+    
+    // Force Kotlin version resolution
+    configurations.all {
+        resolutionStrategy {
+            force("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
+        }
     }
     buildFeatures {
         viewBinding = true
@@ -74,6 +89,9 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
+    
+    // Kotlin Metadata (for compatibility)
+    implementation(libs.kotlinx.metadata.jvm)
     
     // Testing
     testImplementation(libs.junit)

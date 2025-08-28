@@ -5,16 +5,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.upstox.pulkitnigamtask.databinding.ActivityMainBinding
 import com.upstox.pulkitnigamtask.presentation.adapter.HoldingsAdapter
 import com.upstox.pulkitnigamtask.presentation.helper.PortfolioUIHelper
-import com.upstox.pulkitnigamtask.presentation.model.HoldingsState
+
 import com.upstox.pulkitnigamtask.presentation.viewmodel.HoldingsViewModel
 import com.upstox.pulkitnigamtask.util.EdgeToEdgeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,12 +29,22 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: HoldingsViewModel by viewModels()
     private val holdingsAdapter = HoldingsAdapter()
     private lateinit var portfolioUIHelper: PortfolioUIHelper
+    private var isSummaryExpanded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializeUI()
         setupObservers()
         setupClickListeners()
+        loadData()
+        
+        // Handle back press with OnBackPressedDispatcher
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Custom back press logic can be added here
+                finish()
+            }
+        })
     }
 
     private fun initializeUI() {
@@ -76,34 +89,51 @@ class MainActivity : AppCompatActivity() {
         portfolioUIHelper = PortfolioUIHelper(this)
     }
 
+    private fun loadData() {
+        viewModel.loadHoldings()
+    }
+
     private fun setupObservers() {
-        observeHoldingsState()
-        observeSummaryExpansion()
+        observeHoldingsData()
+        observeLoadingState()
+        observeErrorState()
     }
 
-    private fun observeHoldingsState() {
-        viewModel.state.observe(this, Observer { state ->
-            when (state) {
-                is HoldingsState.Loading -> showLoadingState()
-                is HoldingsState.Success -> showSuccessState(state.holdings, state.portfolioSummary)
-                is HoldingsState.Error -> showErrorState(state.message)
+    private fun observeHoldingsData() {
+        lifecycleScope.launch {
+            viewModel.allHoldings.collectLatest { holdings ->
+                if (holdings.isNotEmpty()) {
+                    showSuccessState(holdings)
+                }
             }
-        })
+        }
     }
 
-    private fun observeSummaryExpansion() {
-        viewModel.isSummaryExpanded.observe(this, Observer { isExpanded ->
-            updateSummaryExpansion(isExpanded)
-        })
+    private fun observeLoadingState() {
+        lifecycleScope.launch {
+            viewModel.isLoading.collectLatest { isLoading ->
+                if (isLoading) {
+                    showLoadingState()
+                }
+            }
+        }
+    }
+
+    private fun observeErrorState() {
+        lifecycleScope.launch {
+            viewModel.error.collectLatest { errorMessage ->
+                errorMessage?.let { showErrorState(it) }
+            }
+        }
     }
 
     private fun setupClickListeners() {
         binding.btnRetry.setOnClickListener { 
-            viewModel.retry()
+            viewModel.refreshData()
             showSnackbar("Refreshing portfolio data...")
         }
         binding.layoutPortfolioSummary.setOnClickListener { 
-            viewModel.toggleSummaryExpansion()
+            toggleSummaryExpansion()
         }
     }
 
@@ -115,10 +145,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSuccessState(
-        holdings: List<com.upstox.pulkitnigamtask.domain.model.Holding>,
-        summary: com.upstox.pulkitnigamtask.domain.model.PortfolioSummary
-    ) {
+    private fun showSuccessState(holdings: List<com.upstox.pulkitnigamtask.domain.model.Holding>) {
         binding.apply {
             progressBar.visibility = View.GONE
             rvHoldings.visibility = View.VISIBLE
@@ -126,12 +153,7 @@ class MainActivity : AppCompatActivity() {
         }
         
         updateHoldingsList(holdings)
-        updatePortfolioSummary(summary)
-        
-        // Show success feedback
-        if (holdings.isNotEmpty()) {
-            showSnackbar("Portfolio loaded successfully")
-        }
+        updatePortfolioSummary(holdings)
     }
 
     private fun showErrorState(message: String) {
@@ -149,16 +171,31 @@ class MainActivity : AppCompatActivity() {
         holdingsAdapter.submitList(holdings)
     }
 
-    private fun updatePortfolioSummary(summary: com.upstox.pulkitnigamtask.domain.model.PortfolioSummary) {
-        val formattedSummary = portfolioUIHelper.formatPortfolioSummary(summary)
+    private fun updatePortfolioSummary(holdings: List<com.upstox.pulkitnigamtask.domain.model.Holding>) {
+        // Calculate portfolio summary from holdings
+        val currentValue: Double = holdings.sumOf { it.currentValue }
+        val totalInvestment: Double = holdings.sumOf { it.totalInvestment }
+        val totalPnl: Double = currentValue - totalInvestment
+        val todaysPnl: Double = holdings.sumOf { it.todaysPnl }
+        
         binding.apply {
-            tvCurrentValue.text = formattedSummary.currentValue
-            tvTotalInvestment.text = formattedSummary.totalInvestment
-            tvTodaysPnl.text = formattedSummary.todaysPnl
-            tvTotalPnl.text = formattedSummary.totalPnl
-            tvTodaysPnl.setTextColor(formattedSummary.todaysPnlColor)
-            tvTotalPnl.setTextColor(formattedSummary.totalPnlColor)
+            tvCurrentValue.text = "₹${String.format("%.2f", currentValue)}"
+            tvTotalInvestment.text = "₹${String.format("%.2f", totalInvestment)}"
+            tvTodaysPnl.text = "₹${String.format("%.2f", todaysPnl)}"
+            tvTotalPnl.text = "₹${String.format("%.2f", totalPnl)}"
+            
+            // Set colors based on PnL
+            val todaysPnlColor = if (todaysPnl >= 0) R.color.success_60 else R.color.error_60
+            val totalPnlColor = if (totalPnl >= 0) R.color.success_60 else R.color.error_60
+            
+            tvTodaysPnl.setTextColor(ContextCompat.getColor(this@MainActivity, todaysPnlColor))
+            tvTotalPnl.setTextColor(ContextCompat.getColor(this@MainActivity, totalPnlColor))
         }
+    }
+
+    private fun toggleSummaryExpansion() {
+        isSummaryExpanded = !isSummaryExpanded
+        updateSummaryExpansion(isSummaryExpanded)
     }
 
     private fun updateSummaryExpansion(isExpanded: Boolean) {
@@ -189,7 +226,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_refresh -> {
-                viewModel.retry()
+                viewModel.refreshData()
                 showSnackbar("Refreshing portfolio data...")
                 true
             }
@@ -197,7 +234,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
+
 }

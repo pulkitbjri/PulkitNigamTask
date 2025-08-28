@@ -1,5 +1,6 @@
 package com.upstox.pulkitnigamtask.di.modules.data
 
+import com.upstox.pulkitnigamtask.data.local.dao.HoldingDao
 import com.upstox.pulkitnigamtask.data.remote.ApiService
 import com.upstox.pulkitnigamtask.data.repository.HoldingsRepositoryImpl
 import com.upstox.pulkitnigamtask.domain.repository.HoldingsRepository
@@ -23,7 +24,10 @@ object RepositoryModule {
      */
     @Provides
     @Singleton
-    fun provideHoldingsRepository(apiService: ApiService): HoldingsRepository {
-        return HoldingsRepositoryImpl(apiService)
+    fun provideHoldingsRepository(
+        apiService: ApiService,
+        holdingDao: HoldingDao
+    ): HoldingsRepository {
+        return HoldingsRepositoryImpl(apiService, holdingDao)
     }
 }

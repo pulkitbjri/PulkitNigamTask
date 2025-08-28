@@ -1,27 +1,28 @@
 [versions]
-agp = "8.12.1"
-kotlin = "2.0.21"
-coreKtx = "1.16.0"
+agp = "8.2.2"
+kotlin = "1.9.22"
+coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-lifecycleRuntimeKtx = "2.7.0"
+lifecycleRuntimeKtx = "2.6.2"
 appcompat = "1.6.1"
 activity = "1.8.2"
-material = "1.11.0"
+material = "1.10.0"
 constraintlayout = "2.1.4"
 recyclerview = "1.3.2"
 fragmentKtx = "1.6.2"
-lifecycleViewmodelKtx = "2.7.0"
-lifecycleLivedataKtx = "2.7.0"
-daggerHilt = "2.52"
-retrofit = "2.12.0"
-okhttp = "4.12.0"
-coroutines = "1.8.1"
+lifecycleViewmodelKtx = "2.6.2"
+lifecycleLivedataKtx = "2.6.2"
+daggerHilt = "2.48"
+retrofit = "2.9.0"
+okhttp = "4.11.0"
+coroutines = "1.7.3"
 room = "2.6.0"
 mockk = "1.13.10"
 mockitoKotlin = "5.2.1"
 archCoreTesting = "2.2.0"
+kotlinxMetadataJvm = "0.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -60,6 +61,7 @@ androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testin
 
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+kotlinx-metadata-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-metadata-jvm", version.ref = "kotlinxMetadataJvm" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
